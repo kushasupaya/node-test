@@ -1,4 +1,7 @@
 import App from "../../app";
+import { PrismaClient } from '@prisma/client'
+
+const client = new PrismaClient()
 
 export class EventsService {
   constructor(protected app: App) {}
@@ -84,9 +87,38 @@ export class EventsService {
     ```
      */
 
-  async getEventsWithWorkshops() {
+async getEventsWithWorkshops() {
+  let main_result = [];
+  const event = await client.event.findMany();
+  const res= event.map(async(e)=>{
+    console.log(e.id);
+    const workshop_result = await client.workshop.findMany({
+    where: {
+      eventId: e.id
+  },
+  
+})
+
+  main_result.push({
+        id: e.id,
+        name: e.name,
+        createdAt: e.createdAt,
+        workshops: workshop_result.map(w=>{
+          return{
+            'id': w.id,
+            'start': w.start,
+            'end': w.end,
+            'eventId': w.eventId,
+            'name': w.name,
+            'createdAt': w.createdAt,            
+        }
+        })
+  })
+
+});
+console.log(main_result);
     throw new Error('TODO task 1');
-  }
+}
 
   /* TODO: complete getFutureEventWithWorkshops so that it returns events with workshops, that have not yet started
     Requirements:

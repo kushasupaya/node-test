@@ -1,5 +1,9 @@
 import App from "../../app";
 
+import { PrismaClient } from '@prisma/client'
+
+const client = new PrismaClient()
+
 export class MenuItemsService {
   constructor(protected app: App) {}
 
@@ -79,6 +83,8 @@ export class MenuItemsService {
   */
 
   async getMenuItems() {
+     const menu = await client.menuItem.findMany();
+    //  console.log(JSON.stringify(menu));
     throw new Error('TODO in task 3');
   }
 }
