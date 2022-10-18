@@ -88,18 +88,16 @@ export class EventsService {
      */
 
 async getEventsWithWorkshops() {
-  let main_result = [];
+  let main_result: { id: number; name: string; createdAt: Date; workshops: { id: number; start: Date; end: Date; eventId: number; name: string; createdAt: Date; }[]; }[] = [];
   const event = await client.event.findMany();
   const res= event.map(async(e)=>{
-    console.log(e.id);
     const workshop_result = await client.workshop.findMany({
-    where: {
-      eventId: e.id
-  },
-  
-})
+      where: {
+        eventId: e.id
+      },
+    })
 
-  main_result.push({
+    main_result.push({
         id: e.id,
         name: e.name,
         createdAt: e.createdAt,
@@ -111,12 +109,12 @@ async getEventsWithWorkshops() {
             'eventId': w.eventId,
             'name': w.name,
             'createdAt': w.createdAt,            
-        }
+          }
         })
-  })
-
+      })
+      // console.log(JSON.stringify(main_result));
 });
-console.log(main_result);
+    return main_result;
     throw new Error('TODO task 1');
 }
 
