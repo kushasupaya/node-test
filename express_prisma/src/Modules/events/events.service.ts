@@ -114,7 +114,7 @@ async getEventsWithWorkshops() {
       })
       // console.log(JSON.stringify(main_result));
 });
-    return main_result;
+    return JSON.stringify(main_result);
     throw new Error('TODO task 1');
 }
 

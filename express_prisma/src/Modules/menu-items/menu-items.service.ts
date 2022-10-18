@@ -83,8 +83,15 @@ export class MenuItemsService {
   */
 
   async getMenuItems() {
-     const menu = await client.menuItem.findMany();
-    //  console.log(JSON.stringify(menu));
+    const menu = await client.menuItem.findMany();
+    let main_arr=[];
+
+    const dm = menu.map(e => {
+        main_arr = menu.filter(el => el.parentId === e.id)
+        return main_arr;
+    });
+    
+    console.log(JSON.stringify(dm));
     throw new Error('TODO in task 3');
   }
 }
